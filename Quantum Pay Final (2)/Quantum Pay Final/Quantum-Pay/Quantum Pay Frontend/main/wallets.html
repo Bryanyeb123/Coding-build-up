@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wallets | E-Payment App</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="images/icon.png">
+    <style>
+        /* This CSS is the same as the dashboard.html file to ensure consistent styling. */
+        :root {
+            --primary-bg-color: #f7f9fc;
+            --secondary-bg-color: #ffffff;
+            --text-color: #1a1a1a;
+            --secondary-text-color: #666666;
+            --accent-color: #6c63ff;
+            --border-color: #e0e0e0;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--primary-bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: var(--secondary-bg-color);
+            padding: 2rem;
+            box-shadow: var(--card-shadow);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            margin-bottom: 2rem;
+        }
+
+        .nav-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .nav-menu li {
+            margin-bottom: 1rem;
+        }
+
+        .nav-menu a {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: var(--secondary-text-color);
+            font-weight: 500;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            transition: background-color 0.2s, color 0.2s;
+        }
+
+        .nav-menu a i {
+            margin-right: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .nav-menu a:hover,
+        .nav-menu a.active {
+            background-color: var(--accent-color);
+            color: var(--secondary-bg-color);
+        }
+
+        .main-content {
+            flex-grow: 1;
+            padding: 2rem;
+        }
+
+        .wallets-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .wallet-card {
+            background-color: var(--secondary-bg-color);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .wallet-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .wallet-card h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .balance {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-color);
+        }
+
+        .currency {
+            font-size: 0.9rem;
+            color: var(--secondary-text-color);
+        }
+
+        .wallet-icon {
+            font-size: 3rem;
+            color: var(--border-color);
+        }
+
+        .add-wallet-btn {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: var(--secondary-text-color);
+            border: 2px dashed var(--border-color);
+            cursor: pointer;
+            background-color: transparent;
+            transition: border-color 0.2s, color 0.2s;
+        }
+
+        .add-wallet-btn:hover {
+            border-color: var(--accent-color);
+            color: var(--accent-color);
+        }
+
+        .add-wallet-btn i {
+            font-size: 2.5rem;
+        }
+
+        .add-wallet-btn span {
+            margin-top: 0.5rem;
+            font-weight: 600;
+        }
+
+        .actions-card {
+            background-color: var(--secondary-bg-color);
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .actions-card h3 {
+            margin-bottom: 1rem;
+        }
+
+        .actions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1rem;
+        }
+
+        .action-btn {
+            background-color: var(--primary-bg-color);
+            border: 1px solid var(--border-color);
+            padding: 1rem;
+            border-radius: 12px;
+            text-align: center;
+            text-decoration: none;
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: background-color 0.2s, transform 0.2s, box-shadow 0.2s;
+        }
+
+        .action-btn i {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--accent-color);
+        }
+
+        .action-btn:hover {
+            background-color: var(--accent-color);
+            color: var(--secondary-bg-color);
+            transform: translateY(-5px);
+            box-shadow: var(--card-shadow);
+        }
+
+        .action-btn:hover i {
+            color: var(--secondary-bg-color);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="logo">Quantum Pay</div>
+            <ul class="nav-menu">
+                <li><a href="dashboard-main.html"><i class="fas fa-home"></i>Dashboard</a></li>
+                <li><a href="#" class="active"><i class="fas fa-wallet"></i>Wallets</a></li>
+                <li><a href="transactions.html"><i class="fas fa-exchange-alt"></i>Transactions</a></li>
+                <li><a href="settings-dash.html"><i class="fas fa-cog"></i>Settings</a></li>
+            </ul>
+        </aside>
+
+        <div class="main-content">
+            <div class="actions-card">
+                <h3>Quick Actions</h3>
+                <div class="actions-grid">
+    <a href="send-money.html" class="action-btn">
+        <i class="fas fa-paper-plane"></i>
+        <span>Send</span>
+    </a>
+    <a href="request.html" class="action-btn">
+        <i class="fas fa-money-bill-transfer"></i>
+        <span>Request</span>
+    </a>
+    <a href="withdraw.html" class="action-btn">
+        <i class="fas fa-hand-holding-dollar"></i>
+        <span>Withdraw</span>
+    </a>
+    <a href="top-up.html" class="action-btn">
+        <i class="fas fa-arrow-up-from-bracket"></i>
+        <span>Top-up</span>
+    </a>
+    </div>
+        </div>
+            <h1>My Wallets</h1>
+            <div class="wallets-grid">
+                <div class="wallet-card">
+                    <div>
+                        <h3>Main Account</h3>
+                        <p class="balance">GH₵5,250.00</p>
+                        <p class="currency">Ghana cedis</p>
+                    </div>
+                    <i class="fas fa-wallet wallet-icon"></i>
+                </div>
+                <div class="wallet-card">
+                    <div>
+                        <h3>Savings Account</h3>
+                        <p class="balance">GH₵1,750.00</p>
+                        <p class="currency">Ghana cedis</p>
+                    </div>
+                    <i class="fas fa-piggy-bank wallet-icon"></i>
+                </div>
+                <button class="wallet-card add-wallet-btn">
+                    <i class="fas fa-plus-circle"></i>
+                    <span>Add New Wallet</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

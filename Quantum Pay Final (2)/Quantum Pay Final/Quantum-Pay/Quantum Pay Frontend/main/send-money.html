@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Send Money</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="images/icon.png">
+    <style>
+        /* Global Styles & Variables */
+        :root {
+            --primary-bg-color: #f7f9fc;
+            --secondary-bg-color: #ffffff;
+            --text-color: #1a1a1a;
+            --secondary-text-color: #666666;
+            --accent-color: #6c63ff;
+            --border-color: #e0e0e0;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--primary-bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .send-container {
+            background-color: var(--secondary-bg-color);
+            padding: 2.5rem;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+            width: 100%;
+            max-width: 450px;
+            text-align: center;
+        }
+
+        .send-container h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .send-container p {
+            color: var(--secondary-text-color);
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .send-btn {
+            width: 100%;
+            padding: 1rem;
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .send-btn:hover {
+            background-color: #5a52d3;
+        }
+
+        .message-container {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 8px;
+            font-weight: 500;
+            text-align: center;
+            display: none;
+        }
+
+        .error-message {
+            background-color: #fcebeb;
+            color: #d12e2e;
+        }
+
+        .success-message {
+            background-color: #e6f6e9;
+            color: #1a713b;
+        }
+    </style>
+</head>
+<body>
+    <div class="send-container">
+        <h1>Send Money</h1>
+        <p>Transfer funds to another user.</p>
+
+        <div id="message-container" class="message-container"></div>
+        
+        <form id="send-form">
+            <div class="form-group">
+                <label for="recipient">Recipient's Email or Phone Number</label>
+                <input type="text" id="recipient" placeholder="e.g., user@example.com or 055xxxxxxx" required>
+            </div>
+            <div class="form-group">
+                <label for="amount">Amount to Send (GH₵)</label>
+                <input type="number" id="amount" placeholder="e.g., 100.00" min="0" required>
+            </div>
+            
+            <button type="submit" class="send-btn">Confirm Transfer</button>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sendForm = document.getElementById('send-form');
+            const recipientInput = document.getElementById('recipient');
+            const amountInput = document.getElementById('amount');
+            const messageContainer = document.getElementById('message-container');
+
+            sendForm.addEventListener('submit', function(event) {
+                event.preventDefault(); // Prevent form from submitting normally
+
+                // Clear previous messages
+                messageContainer.innerHTML = '';
+                messageContainer.style.display = 'none';
+                messageContainer.classList.remove('error-message', 'success-message');
+
+                const recipient = recipientInput.value.trim();
+                const amount = parseFloat(amountInput.value);
+
+                // Validation to ensure all fields are filled and amount is positive
+                if (recipient === '') {
+                    messageContainer.textContent = 'Please enter a recipient.';
+                    messageContainer.classList.add('error-message');
+                    messageContainer.style.display = 'block';
+                    return;
+                }
+
+                if (isNaN(amount) || amount <= 0) {
+                    messageContainer.textContent = 'Please enter a valid amount greater than zero.';
+                    messageContainer.classList.add('error-message');
+                    messageContainer.style.display = 'block';
+                    return;
+                }
+
+                // Placeholder logic for sending money
+                // In a real application, you would send this data to a server
+                console.log(`Sending GH₵${amount} to ${recipient}`);
+
+                // Success message
+                messageContainer.textContent = `Successfully sent GH₵${amount} to ${recipient}.`;
+                messageContainer.classList.add('success-message');
+                messageContainer.style.display = 'block';
+
+                // Reset the form after successful submission
+                sendForm.reset();
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top-up Account</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="images/icon.png">
+    <style>
+        /* Global Styles & Variables */
+        :root {
+            --primary-bg-color: #f0f2f5;
+            --secondary-bg-color: #ffffff;
+            --text-color: #212529;
+            --secondary-text-color: #6c757d;
+            --accent-color: #007bff;
+            --accent-hover: #0056b3;
+            --border-color: #ced4da;
+            --card-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.05);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--primary-bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .top-up-container {
+            background-color: var(--secondary-bg-color);
+            padding: 3rem;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+        }
+
+        .top-up-container h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .top-up-container p {
+            color: var(--secondary-text-color);
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.2s ease;
+        }
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: var(--accent-color);
+        }
+
+        /* Quick amount buttons */
+        .quick-amounts {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .quick-amount-btn {
+            flex: 1;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background-color: #f8f9fa;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+        .quick-amount-btn:hover {
+            background-color: var(--accent-color);
+            color: white;
+            border-color: var(--accent-color);
+        }
+        .quick-amount-btn.active {
+            background-color: var(--accent-color);
+            color: white;
+            border-color: var(--accent-color);
+        }
+
+        .top-up-btn {
+            width: 100%;
+            padding: 1rem;
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .top-up-btn:hover {
+            background-color: var(--accent-hover);
+        }
+
+        .message-container {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            border-radius: 8px;
+            font-weight: 500;
+            text-align: center;
+            display: none;
+        }
+
+        .error-message {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .success-message {
+            background-color: #d4edda;
+            color: #155724;
+        }
+    </style>
+</head>
+<body>
+    <div class="top-up-container">
+        <h1>Top-up Account</h1>
+        <p>Add money to your account using a payment method.</p>
+
+        <div id="message-container" class="message-container"></div>
+        
+        <form id="top-up-form">
+            <div class="quick-amounts">
+                <button type="button" class="quick-amount-btn" data-amount="20">GH₵20</button>
+                <button type="button" class="quick-amount-btn" data-amount="50">GH₵50</button>
+                <button type="button" class="quick-amount-btn" data-amount="100">GH₵100</button>
+            </div>
+            
+            <div class="form-group">
+                <label for="amount">Or Enter Custom Amount (GH₵)</label>
+                <input type="number" id="amount" placeholder="e.g., 150.00" min="0" required>
+            </div>
+            <div class="form-group">
+                <label for="method">Top-up Method</label>
+                <select id="method" required>
+                    <option value="" disabled selected>Select a method</option>
+                    <option value="mobile_money">Mobile Money</option>
+                    <option value="credit_card">Credit/Debit Card</option>
+                </select>
+            </div>
+            <div class="form-group" id="account-group" style="display:none;">
+                <label for="account">Card Number or Mobile Number</label>
+                <input type="text" id="account" placeholder="Enter your card or mobile number" required>
+            </div>
+            
+            <button type="submit" class="top-up-btn">Confirm Top-up</button>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const topUpForm = document.getElementById('top-up-form');
+            const amountInput = document.getElementById('amount');
+            const methodSelect = document.getElementById('method');
+            const accountGroup = document.getElementById('account-group');
+            const accountInput = document.getElementById('account');
+            const messageContainer = document.getElementById('message-container');
+            const quickAmountButtons = document.querySelectorAll('.quick-amount-btn');
+
+            // Handle quick amount buttons
+            quickAmountButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // Remove active state from all buttons
+                    quickAmountButtons.forEach(btn => btn.classList.remove('active'));
+                    // Set active state on the clicked button
+                    button.classList.add('active');
+                    // Set the amount input value
+                    amountInput.value = button.dataset.amount;
+                });
+            });
+
+            // Show/hide account input based on method selection
+            methodSelect.addEventListener('change', (event) => {
+                if (event.target.value) {
+                    accountGroup.style.display = 'block';
+                    accountInput.setAttribute('required', 'true');
+                    // Update label text based on method
+                    if (event.target.value === 'mobile_money') {
+                        document.querySelector('#account-group label').textContent = 'Mobile Number';
+                    } else {
+                        document.querySelector('#account-group label').textContent = 'Card Number';
+                    }
+                } else {
+                    accountGroup.style.display = 'none';
+                    accountInput.removeAttribute('required');
+                }
+            });
+
+            topUpForm.addEventListener('submit', function(event) {
+                event.preventDefault(); // Prevent form from submitting
+
+                // Clear previous messages
+                messageContainer.innerHTML = '';
+                messageContainer.style.display = 'none';
+                messageContainer.classList.remove('error-message', 'success-message');
+
+                const amount = parseFloat(amountInput.value);
+                const method = methodSelect.value;
+                const account = accountInput.value.trim();
+
+                // Validation to prevent negative numbers or zero
+                if (isNaN(amount) || amount <= 0) {
+                    messageContainer.textContent = 'Please enter a valid amount greater than zero.';
+                    messageContainer.classList.add('error-message');
+                    messageContainer.style.display = 'block';
+                    return;
+                }
+                
+                if (account === '') {
+                    messageContainer.textContent = 'Please enter your account details.';
+                    messageContainer.classList.add('error-message');
+                    messageContainer.style.display = 'block';
+                    return;
+                }
+
+                // Placeholder logic for top-up
+                console.log(`Top-up initiated: GH₵${amount} from ${method} account ${account}`);
+
+                // Success message
+                messageContainer.textContent = `Successfully topped up GH₵${amount}.`;
+                messageContainer.classList.add('success-message');
+                messageContainer.style.display = 'block';
+
+                // You might want to redirect the user or clear the form here
+                topUpForm.reset();
+                accountGroup.style.display = 'none';
+                quickAmountButtons.forEach(btn => btn.classList.remove('active')); // Deselect quick buttons
+            });
+        });
+    </script>
+</body>
+</html>

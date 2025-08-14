@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transactions | E-Payment App</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="images/icon.png">
+    <style>
+        /* This CSS is the same as the dashboard.html file to ensure consistent styling. */
+        :root {
+            --primary-bg-color: #f7f9fc;
+            --secondary-bg-color: #ffffff;
+            --text-color: #1a1a1a;
+            --secondary-text-color: #666666;
+            --accent-color: #6c63ff;
+            --border-color: #e0e0e0;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--primary-bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: var(--secondary-bg-color);
+            padding: 2rem;
+            box-shadow: var(--card-shadow);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            margin-bottom: 2rem;
+        }
+
+        .nav-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .nav-menu li {
+            margin-bottom: 1rem;
+        }
+
+        .nav-menu a {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: var(--secondary-text-color);
+            font-weight: 500;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            transition: background-color 0.2s, color 0.2s;
+        }
+
+        .nav-menu a i {
+            margin-right: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .nav-menu a:hover,
+        .nav-menu a.active {
+            background-color: var(--accent-color);
+            color: var(--secondary-bg-color);
+        }
+
+        .main-content {
+            flex-grow: 1;
+            padding: 2rem;
+        }
+
+        .transactions-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 2rem;
+            background-color: var(--secondary-bg-color);
+            box-shadow: var(--card-shadow);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .transactions-table th,
+        .transactions-table td {
+            text-align: left;
+            padding: 1rem;
+        }
+
+        .transactions-table thead {
+            background-color: var(--primary-bg-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .transactions-table tbody tr:hover {
+            background-color: var(--primary-bg-color);
+        }
+
+        .transactions-table tbody tr:last-child {
+            border-bottom: none;
+        }
+
+        .status {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            color: var(--secondary-bg-color);
+        }
+
+        .completed {
+            background-color: #28a745;
+        }
+
+        .pending {
+            background-color: #ffc107;
+        }
+
+        .failed {
+            background-color: #dc3545;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 1.5rem;
+            gap: 0.5rem;
+        }
+
+        .pagination a {
+            text-decoration: none;
+            color: var(--text-color);
+            background-color: var(--secondary-bg-color);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            transition: background-color 0.2s;
+        }
+
+        .pagination a.active,
+        .pagination a:hover {
+            background-color: var(--accent-color);
+            color: var(--secondary-bg-color);
+            border-color: var(--accent-color);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                padding: 1rem;
+            }
+
+            .transactions-table,
+            .transactions-table tbody,
+            .transactions-table thead,
+            .transactions-table tr,
+            .transactions-table th,
+            .transactions-table td {
+                display: block;
+            }
+
+            .transactions-table thead {
+                display: none;
+            }
+
+            .transactions-table tr {
+                border: 1px solid var(--border-color);
+                margin-bottom: 1rem;
+                border-radius: 8px;
+            }
+
+            .transactions-table td {
+                text-align: right;
+                padding-left: 50%;
+                position: relative;
+            }
+
+            .transactions-table td::before {
+                content: attr(data-label);
+                position: absolute;
+                left: 10px;
+                width: 45%;
+                padding-right: 10px;
+                white-space: nowrap;
+                font-weight: 600;
+                text-align: left;
+            }
+
+            .pagination {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="logo">Quantum Pay</div>
+            <ul class="nav-menu">
+                <li><a href="dashboard-main.html"><i class="fas fa-home"></i>Dashboard</a></li>
+                <li><a href="wallets.html"><i class="fas fa-wallet"></i>Wallets</a></li>
+                <li><a href="#" class="active"><i class="fas fa-exchange-alt"></i>Transactions</a></li>
+                <li><a href="settings-dash.html"><i class="fas fa-cog"></i>Settings</a></li>
+            </ul>
+        </aside>
+
+        <div class="main-content">
+            <h1>Transaction History</h1>
+            <section class="transactions-section">
+                <table class="transactions-table">
+                    <thead>
+                        <tr>
+                            <th>Transaction ID</th>
+                            <th>Date</th>
+                            <th>Description</th>
+                            <th>Type</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td data-label="Transaction ID">#000123</td>
+                            <td data-label="Date">2025-08-12</td>
+                            <td data-label="Description">Online Purchase</td>
+                            <td data-label="Type">Sent</td>
+                            <td data-label="Amount">GH₵25.50</td>
+                            <td data-label="Status"><span class="status completed">Completed</span></td>
+                        </tr>
+                        <tr>
+                            <td data-label="Transaction ID">#000122</td>
+                            <td data-label="Date">2025-08-10</td>
+                            <td data-label="Description">Acme Corp</td>
+                            <td data-label="Type">Received</td>
+                            <td data-label="Amount">GH₵120.00</td>
+                            <td data-label="Status"><span class="status completed">Completed</span></td>
+                        </tr>
+                        <tr>
+                            <td data-label="Transaction ID">#000121</td>
+                            <td data-label="Date">2025-08-10</td>
+                            <td data-label="Description">Gym Membership</td>
+                            <td data-label="Type">Sent</td>
+                            <td data-label="Amount">GH₵80.00</td>
+                            <td data-label="Status"><span class="status failed">Failed</span></td>
+                        </tr>
+                        <tr>
+                            <td data-label="Transaction ID">#000120</td>
+                            <td data-label="Date">2025-08-09</td>
+                            <td data-label="Description">Groceries Store</td>
+                            <td data-label="Type">Sent</td>
+                            <td data-label="Amount">GH₵95.50</td>
+                            <td data-label="Status"><span class="status completed">Completed</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="pagination">
+                    <a href="#">Previous</a>
+                    <a href="#" class="active">1</a>
+                    <a href="#">2</a>
+                    <a href="#">3</a>
+                    <a href="#">Next</a>
+                </div>
+            </section>
+        </div>
+    </div>
+    <script>
+        // Placeholder for future JavaScript functionality.
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log("Dashboard UI is ready!");
+        });
+    </script>
+</body>
+</html>

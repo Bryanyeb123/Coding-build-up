@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notifications | Quantum Pay</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="images/icon.png">
+    <style>
+        /*
+            CSS for notifications.html
+            This code maintains the design consistency with your other pages,
+            using the same color palette and component styles.
+        */
+        :root {
+            --primary-bg-color: #f7f9fc;
+            --secondary-bg-color: #ffffff;
+            --text-color: #1a1a1a;
+            --secondary-text-color: #666666;
+            --accent-color: #6c63ff;
+            --border-color: #e0e0e0;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --info-color: #17a2b8;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--primary-bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        
+        .main-content {
+            width: 100%;
+            max-width: 800px; /* Optional: Limit width for better readability */
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .main-content h1 {
+            font-size: 2rem;
+            font-weight: 600;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.25rem;
+            background-color: var(--secondary-bg-color);
+            color: var(--text-color);
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 500;
+            box-shadow: var(--card-shadow);
+            transition: background-color 0.2s ease, transform 0.2s ease;
+        }
+        
+        .back-btn:hover {
+            background-color: #f0f2f5;
+            transform: translateY(-2px);
+        }
+        
+        .notification-list {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .notification-item {
+            background-color: var(--secondary-bg-color);
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            position: relative;
+        }
+
+        .notification-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .notification-icon {
+            font-size: 2rem;
+            width: 4rem;
+            height: 4rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--secondary-bg-color);
+        }
+
+        .icon-success {
+            background-color: var(--success-color);
+        }
+
+        .icon-warning {
+            background-color: var(--warning-color);
+        }
+        
+        .icon-info {
+            background-color: var(--info-color);
+        }
+
+        .notification-content {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .notification-content h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .notification-content p {
+            font-size: 0.9rem;
+            color: var(--secondary-text-color);
+        }
+
+        .notification-timestamp {
+            font-size: 0.8rem;
+            color: var(--secondary-text-color);
+            text-align: right;
+            white-space: nowrap;
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 1rem;
+            }
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-content">
+        <header class="header">
+            <h1>Notifications</h1>
+            <a href="dashboard-main.html" class="back-btn">
+                <i class="fas fa-arrow-left"></i>
+                Back to Dashboard
+            </a>
+        </header>
+        
+        <ul class="notification-list">
+            <li class="notification-item">
+                <div class="notification-icon icon-success">
+                    <i class="fas fa-check"></i>
+                </div>
+                <div class="notification-content">
+                    <h3>Payment Received</h3>
+                    <p>You received GH₵150.00 from Kwesi Essah.</p>
+                </div>
+                <span class="notification-timestamp">2 hours ago</span>
+            </li>
+
+            <li class="notification-item">
+                <div class="notification-icon icon-info">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <div class="notification-content">
+                    <h3>Profile Updated</h3>
+                    <p>Your profile information has been successfully updated.</p>
+                </div>
+                <span class="notification-timestamp">1 day ago</span>
+            </li>
+
+            <li class="notification-item">
+                <div class="notification-icon icon-warning">
+                    <i class="fas fa-lock"></i>
+                </div>
+                <div class="notification-content">
+                    <h3>Password Changed</h3>
+                    <p>Your password was changed 2 days ago. If this was not you, please contact support immediately.</p>
+                </div>
+                <span class="notification-timestamp">2 days ago</span>
+            </li>
+
+            <li class="notification-item">
+                <div class="notification-icon icon-success">
+                    <i class="fas fa-exchange-alt"></i>
+                </div>
+                <div class="notification-content">
+                    <h3>Payment Sent</h3>
+                    <p>You sent GH₵75.00 to Ama Adom.</p>
+                </div>
+                <span class="notification-timestamp">3 days ago</span>
+            </li>
+        </ul>
+    </div>
+</body>
+</html>

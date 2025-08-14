@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile | Quantum Pay</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="images/icon.png">
+    <style>
+        /*
+            CSS for user-profile.html
+            This code maintains the design consistency with your other pages,
+            using the same color palette and component styles.
+        */
+
+        :root {
+            --primary-bg-color: #f7f9fc;
+            --secondary-bg-color: #ffffff;
+            --text-color: #1a1a1a;
+            --secondary-text-color: #666666;
+            --accent-color: #6c63ff;
+            --border-color: #e0e0e0;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            --success-color: #28a745;
+            --expense-color: #dc3545;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--primary-bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: var(--secondary-bg-color);
+            padding: 2rem;
+            box-shadow: var(--card-shadow);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            margin-bottom: 2rem;
+        }
+
+        .nav-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            flex-grow: 1;
+        }
+
+        .nav-menu li {
+            margin-bottom: 1rem;
+        }
+
+        .nav-menu a {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: var(--secondary-text-color);
+            font-weight: 500;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            transition: background-color 0.2s, color 0.2s;
+        }
+
+        .nav-menu a i {
+            margin-right: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .nav-menu a:hover,
+        .nav-menu a.active {
+            background-color: var(--accent-color);
+            color: var(--secondary-bg-color);
+        }
+
+        .main-content {
+            flex-grow: 1;
+            padding: 2rem;
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1.5rem;
+        }
+
+        .profile-pic {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background-color: var(--accent-color);
+            color: var(--secondary-bg-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-right: 1.5rem;
+        }
+
+        .profile-info h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .profile-info p {
+            color: var(--secondary-text-color);
+        }
+
+        .profile-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        .profile-section {
+            background-color: var(--secondary-bg-color);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .profile-section h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 0.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 5px rgba(108, 99, 255, 0.5);
+        }
+
+        .save-btn {
+            background-color: var(--accent-color);
+            color: var(--secondary-bg-color);
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .save-btn:hover {
+            background-color: #5a52d3;
+        }
+
+        .security-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .security-item:last-child {
+            border-bottom: none;
+        }
+
+        .security-item span {
+            font-weight: 500;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 40px;
+            height: 20px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 20px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 2px;
+            bottom: 2px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: var(--accent-color);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(20px);
+        }
+
+        .activity-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .activity-description {
+            font-weight: 500;
+        }
+
+        .activity-date {
+            font-size: 0.8rem;
+            color: var(--secondary-text-color);
+        }
+
+        .activity-amount {
+            font-weight: 600;
+        }
+
+        .completed {
+            color: var(--success-color);
+        }
+
+        .expense {
+            color: var(--expense-color);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="logo">Quantum Pay</div>
+            <ul class="nav-menu">
+                <li><a href="dashboard-main.html"><i class="fas fa-home"></i>Dashboard</a></li>
+                <li><a href="wallets.html"><i class="fas fa-wallet"></i>Wallets</a></li>
+                <li><a href="transactions.html"><i class="fas fa-exchange-alt"></i>Transactions</a></li>
+                <li><a href="settings-dash.html"><i class="fas fa-cog"></i>Settings</a></li>
+            </ul>
+        </aside>
+
+        <div class="main-content">
+            <header class="profile-header">
+                <div id="profilePic" class="profile-pic">KE</div>
+                <div class="profile-info">
+                    <h1 id="profileName">Kwesi Essah</h1>
+                    <p id="profileEmail">kwesi.essah@example.com</p>
+                </div>
+            </header>
+            
+            <div class="profile-grid">
+                <section class="profile-section">
+                    <h2>Account Details</h2>
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" value="Kwesi Essah">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" value="kwesi.essah@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" value="+233 (55) 555-5555">
+                    </div>
+                    <button id="saveChangesBtn" class="save-btn">Save Changes</button>
+                </section>
+
+                <section class="profile-section">
+                    <h2>Security</h2>
+                    <div class="security-item">
+                        <span>Two-Factor Authentication (2FA)</span>
+                        <label class="switch">
+                            <input type="checkbox" id="2fa-toggle" checked>
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <div class="security-item">
+                        <span>Change Password</span>
+                        <a href="#" class="save-btn" style="text-decoration: none;">Change</a>
+                    </div>
+                    <div class="security-item">
+                        <span>Last Login</span>
+                        <span id="lastLoginDate">Aug 12, 2025</span>
+                    </div>
+                </section>
+
+                <section class="profile-section">
+                    <h2>Recent Activity</h2>
+                    <ul class="activity-list">
+                        <li class="activity-item">
+                            <div class="activity-info">
+                                <span class="activity-description">Payment to Kwadwo</span>
+                                <span class="activity-date">Aug 12, 2025</span>
+                            </div>
+                            <span class="activity-amount expense">-GH₵150.00</span>
+                        </li>
+                        <li class="activity-item">
+                            <div class="activity-info">
+                                <span class="activity-description">Top-up from Bank</span>
+                                <span class="activity-date">Aug 11, 2025</span>
+                            </div>
+                            <span class="activity-amount completed">+GH₵500.00</span>
+                        </li>
+                    </ul>
+                </section>
+                
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        /*
+            JavaScript for user-profile.html
+            This script populates the user data and handles the save functionality.
+        */
+        document.addEventListener('DOMContentLoaded', () => {
+            // Dummy user data
+            const userData = {
+                name: "Kwesi Essah",
+                email: "kwesi.essah@example.com",
+                phone: "+233 (55) 555-5555",
+                lastLogin: "Aug 12, 2025"
+            };
+
+            // Get elements to update
+            const profileNameElement = document.getElementById('profileName');
+            const profileEmailElement = document.getElementById('profileEmail');
+            const profilePicElement = document.getElementById('profilePic');
+            const nameInput = document.getElementById('name');
+            const emailInput = document.getElementById('email');
+            const phoneInput = document.getElementById('phone');
+            const lastLoginElement = document.getElementById('lastLoginDate');
+            const saveChangesBtn = document.getElementById('saveChangesBtn');
+            const twoFaToggle = document.getElementById('2fa-toggle');
+
+            // Function to populate the profile data
+            const populateProfile = (data) => {
+                profileNameElement.textContent = data.name;
+                profileEmailElement.textContent = data.email;
+                profilePicElement.textContent = data.name.split(' ').map(n => n[0]).join(''); // 'KE'
+                nameInput.value = data.name;
+                emailInput.value = data.email;
+                phoneInput.value = data.phone;
+                lastLoginElement.textContent = data.lastLogin;
+            };
+
+            // Initial population
+            populateProfile(userData);
+
+            // Save Changes button logic
+            saveChangesBtn.addEventListener('click', () => {
+                // In a real application, you would send this data to a server
+                const newName = nameInput.value;
+                const newEmail = emailInput.value;
+                const newPhone = phoneInput.value;
+
+                if (newName && newEmail) {
+                    // Update dummy data and UI
+                    userData.name = newName;
+                    userData.email = newEmail;
+                    userData.phone = newPhone;
+                    populateProfile(userData);
+
+                    alert('Profile saved successfully!');
+                } else {
+                    alert('Name and Email cannot be empty.');
+                }
+            });
+
+            // 2FA toggle logic
+            twoFaToggle.addEventListener('change', (event) => {
+                if (event.target.checked) {
+                    alert('Two-Factor Authentication Enabled!');
+                } else {
+                    alert('Two-Factor Authentication Disabled!');
+                }
+            });
+        });
+    </script>
+    <!-- <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const logoutButton = document.getElementById('logout-btn');
+
+        logoutButton.addEventListener('click', (event) => {
+            // Prevent the default link behavior
+            event.preventDefault(); 
+
+            // Clear all relevant user data from localStorage
+            localStorage.removeItem('userName');
+            localStorage.removeItem('userEmail');
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('lastLogin');
+            // You can add more items to clear here as needed
+
+            // Redirect the user to the loading page
+            window.location.href = 'loading page.html';
+        });
+    });
+</script> -->
+</body>
+</html>

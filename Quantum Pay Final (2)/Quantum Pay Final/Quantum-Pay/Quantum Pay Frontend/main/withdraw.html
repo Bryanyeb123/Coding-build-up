@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Withdraw Funds</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="images/icon.png">
+    <style>
+        /* Global Styles & Variables */
+        :root {
+            --primary-bg-color: #f7f9fc;
+            --secondary-bg-color: #ffffff;
+            --text-color: #1a1a1a;
+            --secondary-text-color: #666666;
+            --accent-color: #6c63ff;
+            --border-color: #e0e0e0;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--primary-bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .withdraw-container {
+            background-color: var(--secondary-bg-color);
+            padding: 2.5rem;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+            width: 100%;
+            max-width: 450px;
+            text-align: center;
+        }
+
+        .withdraw-container h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .withdraw-container p {
+            color: var(--secondary-text-color);
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        /* New CSS to remove arrows from number input */
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type="number"] {
+            -moz-appearances: textfield;
+        }
+
+
+        .withdraw-btn {
+            width: 100%;
+            padding: 1rem;
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .withdraw-btn:hover {
+            background-color: #5a52d3;
+        }
+
+        .message-container {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 8px;
+            font-weight: 500;
+            text-align: center;
+            display: none;
+        }
+
+        .error-message {
+            background-color: #fcebeb;
+            color: #d12e2e;
+        }
+
+        .success-message {
+            background-color: #e6f6e9;
+            color: #1a713b;
+        }
+    </style>
+</head>
+<body>
+    <div class="withdraw-container">
+        <h1>Withdraw Funds</h1>
+        <p>Enter the details to withdraw money from your account.</p>
+
+        <div id="message-container" class="message-container"></div>
+        
+        <form id="withdraw-form">
+            <div class="form-group">
+                <label for="amount">Amount to Withdraw (GH₵)</label>
+                <input type="number" id="amount" placeholder="e.g., 200.00" min="0" required>
+            </div>
+            <div class="form-group">
+                <label for="method">Withdrawal Method</label>
+                <select id="method" required>
+                    <option value="" disabled selected>Select a method</option>
+                    <option value="mobile_money">Mobile Money</option>
+                    <option value="bank_transfer">Bank Transfer</option>
+                </select>
+            </div>
+            <div class="form-group" id="account-group" style="display:none;">
+                <label for="account">Mobile Number or Bank Account</label>
+                <input type="text" id="account" placeholder="Enter mobile number or account number" required>
+            </div>
+            
+            <button type="submit" class="withdraw-btn">Confirm Withdrawal</button>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const withdrawForm = document.getElementById('withdraw-form');
+            const amountInput = document.getElementById('amount');
+            const methodSelect = document.getElementById('method');
+            const accountGroup = document.getElementById('account-group');
+            const accountInput = document.getElementById('account');
+            const messageContainer = document.getElementById('message-container');
+
+            // Show/hide account input based on method selection
+            methodSelect.addEventListener('change', (event) => {
+                if (event.target.value) {
+                    accountGroup.style.display = 'block';
+                    accountInput.setAttribute('required', 'true');
+                } else {
+                    accountGroup.style.display = 'none';
+                    accountInput.removeAttribute('required');
+                }
+            });
+
+            withdrawForm.addEventListener('submit', function(event) {
+                event.preventDefault(); // Prevent form from submitting
+
+                // Clear previous messages
+                messageContainer.innerHTML = '';
+                messageContainer.style.display = 'none';
+                messageContainer.classList.remove('error-message', 'success-message');
+
+                const amount = parseFloat(amountInput.value);
+                const method = methodSelect.value;
+                const account = accountInput.value.trim();
+
+                // Validation to prevent negative numbers or zero
+                if (isNaN(amount) || amount <= 0) {
+                    messageContainer.textContent = 'Please enter a valid amount greater than zero.';
+                    messageContainer.classList.add('error-message');
+                    messageContainer.style.display = 'block';
+                    return;
+                }
+                
+                if (account === '') {
+                    messageContainer.textContent = 'Please enter an account number or mobile number.';
+                    messageContainer.classList.add('error-message');
+                    messageContainer.style.display = 'block';
+                    return;
+                }
+
+                // Placeholder logic for withdrawal
+                console.log(`Withdrawal initiated: GH₵${amount} to ${method} account ${account}`);
+
+                // Success message
+                messageContainer.textContent = `Successfully initiated withdrawal of GH₵${amount} to account ${account}.`;
+                messageContainer.classList.add('success-message');
+                messageContainer.style.display = 'block';
+
+                // Reset form
+                withdrawForm.reset();
+                accountGroup.style.display = 'none';
+            });
+        });
+    </script>
+</body>
+</html>
